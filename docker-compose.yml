@@ -1,0 +1,9 @@
+on: '3.8'
+
+services:
+  twitchbot:
+    build: .
+    env_file:
+      - .env
+    restart: unless-stopped
+
