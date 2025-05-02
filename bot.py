@@ -2,6 +2,9 @@ from twitchio.ext import commands
 import os
 import requests
 
+def sendInput(inputValue):
+    requests.post("http://host.docker.internal:8084/input", json={"command": inputValue})
+
 class Bot(commands.Bot):
 
     def __init__(self):
@@ -19,8 +22,20 @@ class Bot(commands.Bot):
             return
 
         print(f"{message.author.name}: {message.content}")
-
-        requests.post("http://host.docker.internal:8084/input", json={"command": "a"})
+        
+        match message.content:
+            case "a" | "s" | "w" | "d":
+                sendInput(message.content)
+            case "ctrl" | "click" | "atk" | "attack":
+                sendInput("ctrl")
+            case "up":
+                sendInput("w")
+            case "right": 
+                sendInput("d")
+            case "left":
+                sendInput("a")
+            case "down":
+                sendInput("s")
 
         await self.handle_commands(message)
 
