@@ -1,5 +1,6 @@
 from twitchio.ext import commands
 import os
+import requests
 
 class Bot(commands.Bot):
 
@@ -18,6 +19,9 @@ class Bot(commands.Bot):
             return
 
         print(f"{message.author.name}: {message.content}")
+
+        requests.post("http://host.docker.internal:8084/input", json={"command": "a"})
+
         await self.handle_commands(message)
 
     @commands.command(name='hello')
