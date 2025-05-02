@@ -25,7 +25,8 @@ class Bot(commands.Bot):
         
         match message.content:
             case "a" | "s" | "w" | "d":
-                sendInput(message.content)
+                requests.post("http://host.docker.internal:8084/input", json={"command": message.content})
+                #sendInput(message.content)
             case "ctrl" | "click" | "atk" | "attack":
                 sendInput("ctrl")
             case "up":
