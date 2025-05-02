@@ -16,6 +16,8 @@ class Bot(commands.Bot):
     async def event_message(self, message):
         if message.echo:
             return
+
+        print(f"{message.author.name}: {message.content}")
         await self.handle_commands(message)
 
     @commands.command(name='hello')
