@@ -44,7 +44,7 @@ class Bot(commands.Bot):
             case "i" | "item":
                 sendInput("i")
 
-        await self.handle_commands(message)
+        #await self.handle_commands(message)
 
     @commands.command(name='hello')
     async def my_command(self, ctx):
