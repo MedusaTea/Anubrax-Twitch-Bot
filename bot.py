@@ -2,10 +2,15 @@ from twitchio.ext import commands
 import os
 import requests
 
-def sendInput(inputValue):
-    requests.post("http://host.docker.internal:8084/input", json={"command": inputValue})
+#path = 'http://172.18.64.1'
+path = 'http://host.docker.internal'
 
 class Bot(commands.Bot):
+    def sendInput(self, inputValue):
+        requests.post(path + ":8084/input", json={"command": inputValue})
+
+    def loopInput(self, inputArray):
+        self.sendInput(list(inputArray))
 
     def __init__(self):
         super().__init__(
@@ -24,27 +29,30 @@ class Bot(commands.Bot):
         print(f"{message.author.name}: {message.content}")
         
         match message.content:
-            case "a" | "s" | "w" | "d":
-                sendInput(message.content)
-                #requests.post("http://host.docker.internal:8084/input", json={"command": message.content})
+            case "a" | "w" | "s" | "d":
+                self.sendInput(message.content)
             case "ctrl" | "click" | "atk" | "attack":
-                sendInput("ctrl")
+                self.sendInput("ctrl")
             case "up":
-                sendInput("w")
+                self.sendInput("up")
             case "right": 
-                sendInput("d")
+                self.sendInput("right")
             case "left":
-                sendInput("a")
+                self.sendInput("left")
             case "down":
-                sendInput("s")
-            case "shoot":
-                sendInput("space")
+                self.sendInput("down")
             case "b" | "bomb":
-                sendInput("b")
-            case "i" | "item":
-                sendInput("i")
+                self.sendInput("b")
+            case "i" | "item" | "space":
+                self.sendInput("i")
+            case "q" | "pill" | "card":
+                self.sendInput("q")
+            case "enter":
+                self.sendInput("enter")
+            case _:
+                self.loopInput(message.content)
 
-        #await self.handle_commands(message)
+        await self.handle_commands(message)
 
     @commands.command(name='hello')
     async def my_command(self, ctx):
