@@ -10,7 +10,8 @@ class Bot(commands.Bot):
         requests.post(path + ":8084/input", json={"command": inputValue})
 
     def loopInput(self, inputArray):
-        self.sendInput(list(inputArray))
+        for char in list(inputArray):
+            self.sendInput(char)
 
     def __init__(self):
         super().__init__(
@@ -31,24 +32,30 @@ class Bot(commands.Bot):
         match message.content:
             case "a" | "w" | "s" | "d":
                 self.sendInput(message.content)
-            case "ctrl" | "click" | "atk" | "attack":
+            case "ctrl" | "click":
                 self.sendInput("ctrl")
-            case "up":
+            case "up" | "u":
                 self.sendInput("up")
-            case "right": 
+            case "right" | "r": 
                 self.sendInput("right")
-            case "left":
+            case "left" | "l":
                 self.sendInput("left")
-            case "down":
+            case "down" | "d":
                 self.sendInput("down")
-            case "b" | "bomb":
-                self.sendInput("b")
+            case "b" | "bomb" | "e":
+                self.sendInput("e")
             case "i" | "item" | "space":
-                self.sendInput("i")
+                self.sendInput("space")
             case "q" | "pill" | "card":
                 self.sendInput("q")
+            case "holdfire" | "hf" | "stop" | "h" | "hold":
+                self.sendInput("hold")
             case "enter":
                 self.sendInput("enter")
+            case "r":
+                self.sendInput("r")
+            case "f":
+                self.sendInput("f")
             case _:
                 self.loopInput(message.content)
 
@@ -57,6 +64,13 @@ class Bot(commands.Bot):
     @commands.command(name='hello')
     async def my_command(self, ctx):
         await ctx.send(f'Hello @{ctx.author.name}!')
+    
+    @commands.command(name='commands')
+    async def my_command(self, ctx):
+        await ctx.send(f'w,a,s,d - movments')
+        await ctx.send(f'u,d,l,r - shoot directions')
+        await ctx.send(f'i / item, b / bomb, q / pill')
+        await ctx.send(f'enter, space')
 
 if __name__ == "__main__":
     bot = Bot()
