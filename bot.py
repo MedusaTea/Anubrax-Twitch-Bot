@@ -2,7 +2,6 @@ from twitchio.ext import commands
 import os
 import requests
 
-#path = 'http://172.18.64.1'
 path = 'http://host.docker.internal'
 
 class Bot(commands.Bot):
