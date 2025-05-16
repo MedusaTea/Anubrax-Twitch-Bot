@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy bot code
-COPY bot.py .
+COPY rogue-blight-chat.py .
 
 # Run the bot
 CMD ["python", "rogue-blight-chat.py"]

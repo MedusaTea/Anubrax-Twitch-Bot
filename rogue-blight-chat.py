@@ -29,28 +29,18 @@ class Bot(commands.Bot):
         print(f"{message.author.name}: {message.content}")
         
         match message.content:
-            case "a" | "w" | "s" | "d" | "r" | "e" | "c" | "x" | "f" | "z" | "q":
+            case "a" | "s" | "d" | "r" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
                 self.sendInput(message.content)
-            case "ctrl" | "dash":
-                self.sendInput("ctrl")
-            case "lskill" | "ls":
-                self.sendInput("q")
-            case "rskill" | "rs":
-                self.sendInput("e")
-            case "cl":
-                self.sendInput("z")
-            case "cr":
-                self.sendInput("c")
             case "right": 
                 self.sendInput("d")
             case "left":
                 self.sendInput("a")
-            case "space" | "jump" | "j":
-                self.sendInput("space")
-            case "walk" | "shift" | "run" | "t":
-                self.sendInput("toggleholdshift")
-            case "map" | "tab" | "m":
-                self.sendInput("tab")
+            case "space" | "jump":
+                self.sendInput("j")
+            case "walk" | "run" | "w":
+                self.sendInput("togglew")
+            case "map":
+                self.sendInput("m")
             case _:
                 self.loopInput(message.content)
 
