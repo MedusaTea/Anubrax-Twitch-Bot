@@ -41,6 +41,10 @@ class Bot(commands.Bot):
                 self.sendInput(message.content, False)
             case "left":
                 self.sendInput("left", False)
+            case "click" | "lclick" | "leftclick":
+                self.sendInput("lclick", False)
+            case "rclick" | "rightclick":
+                self.sendInput("rclick", False)
             case "right": 
                 self.sendInput("right", False)
             case "up": 
