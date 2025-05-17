@@ -29,40 +29,49 @@ class Bot(commands.Bot):
             return
 
         print(f"{message.author.name}: {message.content}")
-      
+    
+        modCommandPrio = False
+        if message.author.is_mod:
+            match message.content:
+                case "esc":
+                    modCommandPrio = True
+                    self.sendInput(message.content, False)
+
+
         holdIncluded = False
         if message.content.find('h') == 0:
             holdIncluded = True
             message.content = message.content.replace('hold', '')
             message.content = message.content.replace('h', '')
-         
-        match message.content:
-            case "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
-                self.sendInput(message.content, False)
-            case "left":
-                self.sendInput("left", False)
-            case "click" | "lclick" | "leftclick":
-                self.sendInput("lclick", False)
-            case "rclick" | "rightclick":
-                self.sendInput("rclick", False)
-            case "right": 
-                self.sendInput("right", False)
-            case "up": 
-                self.sendInput("w", False)
-            case "down": 
-                self.sendInput("s", False)
-            case "enter": 
-                self.sendInput("enter", False)
-            case "space" | "jump":
-                self.sendInput("j", False)
-            case "r" | "block":
-                self.sendInput("r", holdIncluded)
-            case "walk" | "run" | "w":
-                self.sendInput("w", holdIncluded)
-            case "map":
-                self.sendInput("m", False)
-            case _:
-                self.loopInput(message.content, False)
+        
+        if modCommandPrio == False:
+            match message.content:
+                case "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
+                    self.sendInput(message.content, False)
+                case "left":
+                    self.sendInput("left", False)
+                case "click" | "lclick" | "leftclick":
+                    self.sendInput("lclick", False)
+                case "rclick" | "rightclick":
+                    self.sendInput("rclick", False)
+                case "right": 
+                    self.sendInput("right", False)
+                case "up": 
+                    self.sendInput("w", False)
+                case "down": 
+                    self.sendInput("s", False)
+                case "enter": 
+                    self.sendInput("enter", False)
+                case "space" | "jump":
+                    self.sendInput("j", False)
+                case "r" | "block":
+                    self.sendInput("r", holdIncluded)
+                case "walk" | "run" | "w":
+                    self.sendInput("w", holdIncluded)
+                case "map":
+                    self.sendInput("m", False)
+                case _:
+                    self.loopInput(message.content, False)
 
         await self.handle_commands(message)
 
