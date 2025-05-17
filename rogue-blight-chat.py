@@ -49,13 +49,13 @@ class Bot(commands.Bot):
                 case "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
                     self.sendInput(message.content, False)
                 case "left":
-                    self.sendInput("left", False)
+                    self.sendInput("a", False)
                 case "click" | "lclick" | "leftclick":
                     self.sendInput("lclick", False)
                 case "rclick" | "rightclick":
                     self.sendInput("rclick", False)
                 case "right": 
-                    self.sendInput("right", False)
+                    self.sendInput("d", False)
                 case "up": 
                     self.sendInput("w", False)
                 case "down": 
