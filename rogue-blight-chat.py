@@ -48,9 +48,9 @@ class Bot(commands.Bot):
             case "right": 
                 self.sendInput("right", False)
             case "up": 
-                self.sendInput("up", False)
+                self.sendInput("w", False)
             case "down": 
-                self.sendInput("down", False)
+                self.sendInput("s", False)
             case "enter": 
                 self.sendInput("enter", False)
             case "space" | "jump":
