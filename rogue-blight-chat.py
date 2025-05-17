@@ -39,10 +39,16 @@ class Bot(commands.Bot):
         match message.content:
             case "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
                 self.sendInput(message.content, False)
-            case "right": 
-                self.sendInput("d", False)
             case "left":
-                self.sendInput("a", False)
+                self.sendInput("left", False)
+            case "right": 
+                self.sendInput("right", False)
+            case "up": 
+                self.sendInput("up", False)
+            case "down": 
+                self.sendInput("down", False)
+            case "enter": 
+                self.sendInput("enter", False)
             case "space" | "jump":
                 self.sendInput("j", False)
             case "r" | "block":
