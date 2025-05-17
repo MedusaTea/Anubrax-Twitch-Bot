@@ -5,12 +5,14 @@ import requests
 path = 'http://host.docker.internal'
 
 class Bot(commands.Bot):
-    def sendInput(self, inputValue):
+    def sendInput(self, inputValue, hold):
+        if hold:
+            inputValue = "hold" + inputValue
         requests.post(path + ":8084/input", json={"command": inputValue})
 
-    def loopInput(self, inputArray):
+    def loopInput(self, inputArray, hold):
         for char in list(inputArray):
-            self.sendInput(char)
+            self.sendInput(char, hold)
 
     def __init__(self):
         super().__init__(
@@ -27,22 +29,30 @@ class Bot(commands.Bot):
             return
 
         print(f"{message.author.name}: {message.content}")
-        
+      
+        holdIncluded = False
+        if message.content.find('h') == 0:
+            holdIncluded = True
+            message.content = message.content.replace('hold', '')
+            message.content = message.content.replace('h', '')
+         
         match message.content:
-            case "a" | "s" | "d" | "r" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
-                self.sendInput(message.content)
+            case "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
+                self.sendInput(message.content, False)
             case "right": 
-                self.sendInput("d")
+                self.sendInput("d", False)
             case "left":
-                self.sendInput("a")
+                self.sendInput("a", False)
             case "space" | "jump":
-                self.sendInput("j")
+                self.sendInput("j", False)
+            case "r" | "block":
+                self.sendInput("r", holdIncluded)
             case "walk" | "run" | "w":
-                self.sendInput("togglew")
+                self.sendInput("w", holdIncluded)
             case "map":
-                self.sendInput("m")
+                self.sendInput("m", False)
             case _:
-                self.loopInput(message.content)
+                self.loopInput(message.content, False)
 
         await self.handle_commands(message)
 
