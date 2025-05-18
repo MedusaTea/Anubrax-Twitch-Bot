@@ -46,8 +46,10 @@ class Bot(commands.Bot):
         
         if modCommandPrio == False:
             match message.content:
-                case "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o" | "m":
+                case "w" | "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
                     self.sendInput(message.content, False)
+                case "tab":
+                    self.sendInput("tab", False)
                 case "left":
                     self.sendInput("a", False)
                 case "click" | "lclick" | "leftclick":
@@ -66,8 +68,8 @@ class Bot(commands.Bot):
                     self.sendInput("j", False)
                 case "r" | "block":
                     self.sendInput("r", holdIncluded)
-                case "walk" | "run" | "w":
-                    self.sendInput("w", holdIncluded)
+                #case "walk" | "run" | "w":
+                    #self.sendInput("w", holdIncluded)
                 case "map":
                     self.sendInput("m", False)
                 case _:
