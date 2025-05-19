@@ -50,16 +50,16 @@ class Bot(commands.Bot):
         if modCommandPrio == False and len(message.content.split()) == 1:
             match message.content:
                 case "a":
-                    if dHolding:
+                    if self.dHolding:
                         self.sendInput("d", False)
-                        dHolding = False
-                    aHolding = holdIncluded
+                        self.dHolding = False
+                    self.aHolding = holdIncluded
                     self.sendInput(message.content, holdIncluded)
                 case "d":
-                    if aHolding:
+                    if self.aHolding:
                         self.sendInput("a", False)
-                        aHolding = False
-                    dHolding = holdIncluded
+                        self.aHolding = False
+                    self.dHolding = holdIncluded
                     self.sendInput(message.content, holdIncluded)
                 case "w" | "s" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
                     self.sendInput(message.content, False)
