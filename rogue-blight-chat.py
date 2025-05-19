@@ -85,6 +85,7 @@ class Bot(commands.Bot):
                 case "w" | "s" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
                     await self.sendInput(message.content, False)
                 case "tab":
+                    await self.clear_holds()
                     await self.sendInput("tab", False)
                 case "left":
                     await self.sendInput("a", False)
