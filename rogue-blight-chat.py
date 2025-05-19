@@ -1,6 +1,7 @@
 from twitchio.ext import commands
 import os
-import requests
+import httpx
+import asyncio
 
 path = 'http://host.docker.internal'
 
@@ -9,36 +10,38 @@ class Bot(commands.Bot):
     dHolding = False
     rHolding = False
 
-    def sendInput(self, inputValue, hold):
-        if hold:
-            inputValue = "hold" + inputValue
-        requests.post(path + ":8084/input", json={"command": inputValue})
-
-    def loopInput(self, inputArray, hold):
-        for char in list(inputArray):
-            self.sendInput(char, hold)
-
     def __init__(self):
         super().__init__(
             token=os.environ['TMI_TOKEN'],
             prefix='!',
             initial_channels=[os.environ['CHANNEL']]
         )
+        self.client = httpx.AsyncClient()
+
+    async def sendInput(self, inputValue, hold):
+        if hold:
+            inputValue = "hold" + inputValue
+        response = await self.client.post(path + ":8084/input", json={"command": inputValue})
+        response.raise_for_status()
+
+    async def loopInput(self, inputArray, hold):
+        for char in list(inputArray):
+            await self.sendInput(char, hold)
 
     async def event_ready(self):
         print(f'Logged in as | {self.nick}')
 
     async def clear_holds(self):
         if self.dHolding:
-            self.sendInput("d", False)
+            await self.sendInput("d", False)
             self.dHolding = False
         
         if self.aHolding:
-            self.sendInput("a", False)
+            await self.sendInput("a", False)
             self.aHolding = False
         
         if self.rHolding:
-            self.sendInput("r", False)
+            await self.sendInput("r", False)
             self.rHolding = False
 
     async def event_message(self, message):
@@ -51,9 +54,9 @@ class Bot(commands.Bot):
         if message.author.is_mod:
             match message.content:
                 case "esc":
-                    self.clear_holds()
+                    await self.clear_holds()
                     modCommandPrio = True
-                    self.sendInput(message.content, False)
+                    await self.sendInput(message.content, False)
 
 
         holdIncluded = False
@@ -66,46 +69,46 @@ class Bot(commands.Bot):
             match message.content:
                 case "a":
                     if self.dHolding:
-                        self.sendInput("d", False)
+                        await self.sendInput("d", False)
                         self.dHolding = False
                     self.aHolding = holdIncluded
-                    self.sendInput(message.content, holdIncluded)
+                    await self.sendInput(message.content, holdIncluded)
                 case "d":
                     if self.aHolding:
-                        self.sendInput("a", False)
+                        await self.sendInput("a", False)
                         self.aHolding = False
                     self.dHolding = holdIncluded
-                    self.sendInput(message.content, holdIncluded)
+                    await self.sendInput(message.content, holdIncluded)
                 case "w" | "s" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
-                    self.sendInput(message.content, False)
+                    await self.sendInput(message.content, False)
                 case "tab":
-                    self.sendInput("tab", False)
+                    await self.sendInput("tab", False)
                 case "left":
-                    self.sendInput("a", False)
+                    await self.sendInput("a", False)
                 case "click" | "lclick" | "leftclick":
-                    self.sendInput("lclick", False)
+                    await self.sendInput("lclick", False)
                 case "rclick" | "rightclick":
-                    self.sendInput("rclick", False)
+                    await self.sendInput("rclick", False)
                 case "right": 
-                    self.sendInput("d", False)
+                    await self.sendInput("d", False)
                 case "up": 
-                    self.sendInput("w", False)
+                    await self.sendInput("w", False)
                 case "down": 
-                    self.sendInput("s", False)
+                    await self.sendInput("s", False)
                 case "enter" | "y": 
-                    self.clear_holds()
-                    self.sendInput("enter", False)
+                    await self.clear_holds()
+                    await self.sendInput("enter", False)
                 case "space" | "jump":
-                    self.sendInput("j", False)
+                    await self.sendInput("j", False)
                 case "r" | "block":
                     self.rHolding = holdIncluded
-                    self.sendInput("r", holdIncluded)
+                    await self.sendInput("r", holdIncluded)
                 #case "walk" | "run" | "w":
                     #self.sendInput("w", holdIncluded)
                 case "map":
-                    self.sendInput("m", False)
+                    await self.sendInput("m", False)
                 case _:
-                    self.loopInput(message.content, False)
+                    await self.loopInput(message.content, False)
 
         await self.handle_commands(message)
 
@@ -115,9 +118,14 @@ class Bot(commands.Bot):
     
     @commands.command(name='commands')
     async def my_command(self, ctx):
-        await ctx.send(f'on screen only today')
+        await ctx.send(f'on overlay only today')
+
+    async def close(self):
+        await self.client.aclose()
 
 if __name__ == "__main__":
     bot = Bot()
-    bot.run()
-
+    try:
+        bot.run()
+    finally:
+        asyncio.run(bot.close())
