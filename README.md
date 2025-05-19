@@ -14,7 +14,7 @@ $ docker-compose up
 # Running with Python  
 ## Install Dependencies 
 ```bash
-$ pip install --no-cache-dir -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ```bash
