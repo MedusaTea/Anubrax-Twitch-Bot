@@ -5,6 +5,19 @@ import asyncio
 
 path = 'http://host.docker.internal'
 
+CHATTERS_FILE = 'chatters.txt'
+
+def load_chatters():
+    try:
+        with open(CHATTERS_FILE, 'r') as f:
+            return set(line.strip() for line in f if line.strip())
+    except FileNotFoundError:
+        return set()
+
+def save_chatter(useranem):
+    with open(CHATTERS_FILE, 'a') as f:
+        f.write(f"{username}\n")
+
 class Bot(commands.Bot):
     aHolding = False
     dHolding = False
@@ -16,6 +29,7 @@ class Bot(commands.Bot):
             prefix='!',
             initial_channels=[os.environ['CHANNEL']]
         )
+        self.known_chatters = load_chatters()
         self.client = httpx.AsyncClient()
 
     async def sendInput(self, inputValue, hold):
@@ -50,6 +64,11 @@ class Bot(commands.Bot):
     async def event_message(self, message):
         if message.echo:
             return
+
+        if message.author.name not in self.known_chatters:
+            await ctx.send(f'Welcome @{ctx.author.name}! :)')
+            self.known_chatters.add(username)
+            save_chatter(username)
 
         print(f"{message.author.name}: {message.content}")
     
