@@ -5,6 +5,9 @@ import requests
 path = 'http://host.docker.internal'
 
 class Bot(commands.Bot):
+    aHolding = False
+    dHolding = False
+
     def sendInput(self, inputValue, hold):
         if hold:
             inputValue = "hold" + inputValue
@@ -46,7 +49,17 @@ class Bot(commands.Bot):
         
         if modCommandPrio == False and len(message.content.split()) == 1:
             match message.content:
-                case "a" | "d":
+                case "a":
+                    if dHolding:
+                        self.sendInput("d", False)
+                        dHolding = False
+                    aHolding = holdIncluded
+                    self.sendInput(message.content, holdIncluded)
+                case "d":
+                    if aHolding:
+                        self.sendInput("a", False)
+                        aHolding = False
+                    dHolding = holdIncluded
                     self.sendInput(message.content, holdIncluded)
                 case "w" | "s" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
                     self.sendInput(message.content, False)
