@@ -44,7 +44,7 @@ class Bot(commands.Bot):
             message.content = message.content.replace('hold', '')
             message.content = message.content.replace('h', '')
         
-        if modCommandPrio == False:
+        if modCommandPrio == False and len(message.content.split()) == 1:
             match message.content:
                 case "w" | "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
                     self.sendInput(message.content, False)
@@ -63,7 +63,7 @@ class Bot(commands.Bot):
                 case "down": 
                     self.sendInput("s", False)
                 case "enter": 
-                    self.sendInput("enter", False)
+                    self.sendInput("enter", holdIncluded)
                 case "space" | "jump":
                     self.sendInput("j", False)
                 case "r" | "block":
