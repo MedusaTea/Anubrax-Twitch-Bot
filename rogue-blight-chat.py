@@ -67,8 +67,8 @@ class Bot(commands.Bot):
 
         if message.author.name not in self.known_chatters:
             await message.channel.send(f'Welcome @{message.author.name}! :)')
-            self.known_chatters.add(message.auther.name)
-            save_chatter(message.auther.name)
+            self.known_chatters.add(message.author.name)
+            save_chatter(message.author.name)
 
         print(f"{message.author.name}: {message.content}")
     
