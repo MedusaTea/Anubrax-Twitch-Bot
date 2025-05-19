@@ -7,6 +7,7 @@ path = 'http://host.docker.internal'
 class Bot(commands.Bot):
     aHolding = False
     dHolding = False
+    rHolding = False
 
     def sendInput(self, inputValue, hold):
         if hold:
@@ -27,6 +28,19 @@ class Bot(commands.Bot):
     async def event_ready(self):
         print(f'Logged in as | {self.nick}')
 
+    async def clear_holds(self):
+        if self.dHolding:
+            self.sendInput("d", False)
+            self.dHolding = False
+        
+        if self.aHolding:
+            self.sendInput("a", False)
+            self.aHolding = False
+        
+        if self.rHolding:
+            self.sendInput("r", False)
+            self.rHolding = False
+
     async def event_message(self, message):
         if message.echo:
             return
@@ -37,6 +51,7 @@ class Bot(commands.Bot):
         if message.author.is_mod:
             match message.content:
                 case "esc":
+                    self.clear_holds()
                     modCommandPrio = True
                     self.sendInput(message.content, False)
 
@@ -78,10 +93,12 @@ class Bot(commands.Bot):
                 case "down": 
                     self.sendInput("s", False)
                 case "enter" | "y": 
+                    self.clear_holds()
                     self.sendInput("enter", False)
                 case "space" | "jump":
                     self.sendInput("j", False)
                 case "r" | "block":
+                    self.rHolding = holdIncluded
                     self.sendInput("r", holdIncluded)
                 #case "walk" | "run" | "w":
                     #self.sendInput("w", holdIncluded)
