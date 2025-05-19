@@ -66,7 +66,7 @@ class Bot(commands.Bot):
             return
 
         if message.author.name not in self.known_chatters:
-            await message.channel.send(f'Welcome @{ctx.author.name}! :)')
+            await message.channel.send(f'Welcome @{message.author.name}! :)')
             self.known_chatters.add(username)
             save_chatter(username)
 
