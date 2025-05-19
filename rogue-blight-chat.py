@@ -14,7 +14,7 @@ def load_chatters():
     except FileNotFoundError:
         return set()
 
-def save_chatter(useranem):
+def save_chatter(username):
     with open(CHATTERS_FILE, 'a') as f:
         f.write(f"{username}\n")
 
