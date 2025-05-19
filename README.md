@@ -1,8 +1,22 @@
-copy .env.example to a new file .env
-and enter your env information into that file
+# .env Setup
+- Copy `.env.example` to a new file called `.env`
+- Enter your env information into that file
 
+# TwitchIO documentation
+https://github.com/PythonistaGuild/TwitchIO/tree/main
+
+# Running with Docker
+```bash
 $ docker-compose build
-$ docker-compose up -d
+$ docker-compose up
+```
 
-or together
-$ docker-compose up --build -d
+# Running with Python  
+## Install Dependencies 
+```bash
+$ pip install --no-cache-dir -r requirements.txt
+```
+
+```bash
+$ python ./bot.py
+```
