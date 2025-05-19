@@ -46,7 +46,9 @@ class Bot(commands.Bot):
         
         if modCommandPrio == False and len(message.content.split()) == 1:
             match message.content:
-                case "w" | "a" | "s" | "d" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
+                case "a" | "d":
+                    self.sendInput(message.content, holdIncluded)
+                case "w" | "s" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
                     self.sendInput(message.content, False)
                 case "tab":
                     self.sendInput("tab", False)
@@ -63,7 +65,7 @@ class Bot(commands.Bot):
                 case "down": 
                     self.sendInput("s", False)
                 case "enter": 
-                    self.sendInput("enter", holdIncluded)
+                    self.sendInput("enter", False)
                 case "space" | "jump":
                     self.sendInput("j", False)
                 case "r" | "block":
