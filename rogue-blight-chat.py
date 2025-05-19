@@ -77,7 +77,7 @@ class Bot(commands.Bot):
                     self.sendInput("w", False)
                 case "down": 
                     self.sendInput("s", False)
-                case "enter": 
+                case "enter" | "y": 
                     self.sendInput("enter", False)
                 case "space" | "jump":
                     self.sendInput("j", False)
