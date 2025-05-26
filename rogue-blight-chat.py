@@ -40,10 +40,23 @@ class Bot(commands.Bot):
 
     async def loopInput(self, inputArray, hold):
         for char in list(inputArray):
-            if char == "y":
-                await self.sendInput("enter", hold)
-            else:
-                await self.sendInput(char, hold)
+            match char:
+                case "y":
+                    await self.sendInput("enter", hold)
+                case "a":
+                    if self.dHolding:
+                        await self.sendInput("d", False)
+                        self.dHolding = False
+                    self.aHolding = holdIncluded
+                    await self.sendInput(char, holdIncluded)
+                case "d":
+                    if self.aHolding:
+                        await self.sendInput("a", False)
+                        self.aHolding = False
+                    self.dHolding = holdIncluded
+                    await self.sendInput(char, holdIncluded)
+                case "w" | "s" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
+                    await self.sendInput(char, False)
 
     async def event_ready(self):
         print(f'Logged in as | {self.nick}')
