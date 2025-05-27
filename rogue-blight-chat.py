@@ -47,14 +47,14 @@ class Bot(commands.Bot):
                     if self.dHolding:
                         await self.sendInput("d", False)
                         self.dHolding = False
-                    self.aHolding = holdIncluded
-                    await self.sendInput(char, holdIncluded)
+                    self.aHolding = hold
+                    await self.sendInput(char, hold)
                 case "d":
                     if self.aHolding:
                         await self.sendInput("a", False)
                         self.aHolding = False
-                    self.dHolding = holdIncluded
-                    await self.sendInput(char, holdIncluded)
+                    self.dHolding = hold
+                    await self.sendInput(char, hold)
                 case "w" | "s" | "e" | "c" | "x" | "f" | "z" | "q" | "l" | "p" | "j" | "l" | "o":
                     await self.sendInput(char, False)
 
