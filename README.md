@@ -1,6 +1,6 @@
 ## Summary
 This starts a python server listening to chat messages from a channel
-and sends the input to a server listening for input commands.
+and handles the logic then sends transformed/accepted inputs to another server listening for direct input commands.
 
 
 Currently the path is hardcoded to the docker host system on port 8048
